@@ -80,8 +80,11 @@ class _InputWidgetState extends State<InputWidget> {
                     Text('Radio Selected:  ${groupfood}'),
                     line(),
                     const SizedBox(height: 16),
-                    Column(
-                      children: createCheckboxDrink(),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: createCheckboxDrink(),
+                      ),
                     ),
                     Text('Radio Selected:  $checkedDrink'),
                     line(),
@@ -198,7 +201,7 @@ class _InputWidgetState extends State<InputWidget> {
       listDrink.add(CheckboxListTile(
         value: false,
         title: Text(drink.thname!),
-        secondary: Text('${drink.price!.toString()} บาท'),
+        subtitle: Text('${drink.price!.toString()} บาท'),
         onChanged: (value) {
           setState(() {
             drink.checked = value;
@@ -241,7 +244,7 @@ Widget line() => Container(
           Expanded(
               child: Container(
             padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            child: Divider(color: Colors.grey.shade600, thickness: 1),
+            child: Divider(color: Colors.grey.shade600, thickness: 2),
           )),
         ],
       ),
