@@ -55,56 +55,58 @@ class _InputWidgetState extends State<InputWidget> {
       ),
       body: Form(
         key: _formKey,
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Form(
-                child: Column(
-                  children: [
-                    usernameTextFormField(),
-                    passwordTextFormField(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'FOOD',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Form(
+                  child: Column(
+                    children: [
+                      usernameTextFormField(),
+                      passwordTextFormField(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'FOOD',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    line(),
-                    const SizedBox(height: 16),
-                    Column(
-                      children: createRadioFood(),
-                    ),
-                    Text('Radio Selected:  ${groupfood}'),
-                    line(),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: createCheckboxDrink(),
+                      line(),
+                      const SizedBox(height: 16),
+                      Column(
+                        children: createRadioFood(),
                       ),
-                    ),
-                    Text('Radio Selected:  $checkedDrink'),
-                    line(),
-                    const SizedBox(height: 16),
-                    DropdownButton(
-                      value: _selectedTypeItem,
-                      items: _dropdownMenuItem,
-                      onChanged: (ListItem? value) {
-                        setState(() {
-                          _selectedTypeItem = value!;
-                        });
-                      },
-                    ),
-                    Text('Dropdown selected: ${_selectedTypeItem.name}'),
-                    SubmitButton(),
-                  ],
+                      Text('Radio Selected:  ${groupfood}'),
+                      line(),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: createCheckboxDrink(),
+                        ),
+                      ),
+                      Text('Radio Selected:  $checkedDrink'),
+                      line(),
+                      const SizedBox(height: 16),
+                      DropdownButton(
+                        value: _selectedTypeItem,
+                        items: _dropdownMenuItem,
+                        onChanged: (ListItem? value) {
+                          setState(() {
+                            _selectedTypeItem = value!;
+                          });
+                        },
+                      ),
+                      Text('Dropdown selected: ${_selectedTypeItem.name}'),
+                      SubmitButton(),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -112,15 +114,15 @@ class _InputWidgetState extends State<InputWidget> {
 
   Widget SubmitButton() {
     return Container(
-      width: 150,
+      // width: 150,
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            //ถ้ามีการกรอกข้อความ,kไห้เเสดงอะไร
+            //ถ้ามีการกรอกข้อความมาให้เเสดงอะไร
             print(_username.text);
           }
         },
-        child: Text('SUBMIT'),
+        child: Text('Submit'),
       ),
     );
   }
@@ -199,7 +201,7 @@ class _InputWidgetState extends State<InputWidget> {
     List<Widget> listDrink = [];
     for (var drink in drinks!) {
       listDrink.add(CheckboxListTile(
-        value: false,
+        value: drink.checked,
         title: Text(drink.thname!),
         subtitle: Text('${drink.price!.toString()} บาท'),
         onChanged: (value) {

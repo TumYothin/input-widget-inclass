@@ -7,9 +7,9 @@ class Drink {
 
   static getDrink() {
     return [
-      Drink('ชาเย็น', 30, true),
-      Drink('กาเเฟ', 20, true),
-      Drink('ชาเขียน', 20, true),
+      Drink('ชาเย็น', 30, false),
+      Drink('กาเเฟ', 20, false),
+      Drink('ชาเขียว', 20, false),
     ];
   }
 }
