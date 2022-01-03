@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           primarySwatch: Colors.blue, textTheme: GoogleFonts.promptTextTheme()),
-      home: const InputWidget(),
+      home: const Inputwidgets(),
     );
   }
 }

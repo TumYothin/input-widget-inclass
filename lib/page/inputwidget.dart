@@ -2,35 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_input_widget/model/drink.dart';
 import 'package:flutter_input_widget/model/food.dart';
 
-class InputWidget extends StatefulWidget {
-  const InputWidget({Key? key}) : super(key: key);
+class Inputwidgets extends StatefulWidget {
+  const Inputwidgets({Key? key}) : super(key: key);
 
   @override
-  _InputWidgetState createState() => _InputWidgetState();
+  _InputwidgetsState createState() => _InputwidgetsState();
 }
 
-class _InputWidgetState extends State<InputWidget> {
+class _InputwidgetsState extends State<Inputwidgets> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _username = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+  final TextEditingController _pasw = TextEditingController();
 
   String? groupfood;
   List<Food>? foods;
-  List<ListItem> types = ListItem.getItem();
+  List checkDrink = [];
+  List<Drink>? drinks;
+  List<ListItem>? types = ListItem.getItem();
   late List<DropdownMenuItem<ListItem>> _dropdownMenuItem;
   late ListItem _selectedTypeItem;
-
-  List checkedDrink = [];
-  List<Drink>? drinks;
 
   @override
   void initState() {
     super.initState();
     foods = Food.getFood();
     drinks = Drink.getDrink();
-
-    _dropdownMenuItem = createDropdownMenuItem(types);
+    _dropdownMenuItem = createDropdownMenuItem(types!);
     _selectedTypeItem = _dropdownMenuItem[0].value!;
+
+    // print(foods);
   }
 
   List<DropdownMenuItem<ListItem>> createDropdownMenuItem(
@@ -43,69 +43,79 @@ class _InputWidgetState extends State<InputWidget> {
         value: item,
       ));
     }
-
     return items;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Input Widget'),
+        title: Center(child: Text('Input Widget')),
       ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             children: [
+              usernameTextFormField(),
+              passwordTextFormField(),
               Padding(
-                padding: const EdgeInsets.all(8),
-                child: Form(
-                  child: Column(
-                    children: [
-                      usernameTextFormField(),
-                      passwordTextFormField(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'FOOD',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      line(),
-                      const SizedBox(height: 16),
-                      Column(
-                        children: createRadioFood(),
-                      ),
-                      Text('Radio Selected:  ${groupfood}'),
-                      line(),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: createCheckboxDrink(),
-                        ),
-                      ),
-                      Text('Radio Selected:  $checkedDrink'),
-                      line(),
-                      const SizedBox(height: 16),
-                      DropdownButton(
-                        value: _selectedTypeItem,
-                        items: _dropdownMenuItem,
-                        onChanged: (ListItem? value) {
-                          setState(() {
-                            _selectedTypeItem = value!;
-                          });
-                        },
-                      ),
-                      Text('Dropdown selected: ${_selectedTypeItem.name}'),
-                      SubmitButton(),
-                    ],
-                  ),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'FOOD',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-              )
+              ),
+              line(),
+              const SizedBox(height: 16),
+              Column(
+                children: createRadioFood(),
+              ),
+              Text('Radio Selected:  ${groupfood}'),
+              line(),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: createCheckboxDrink(),
+                ),
+              ),
+              Text('Radio Selected:  $checkDrink'),
+              line(),
+              const SizedBox(height: 16),
+              DropdownButton(
+                value: _selectedTypeItem,
+                items: _dropdownMenuItem,
+                onChanged: (ListItem? value) {
+                  setState(() {
+                    _selectedTypeItem = value!;
+                  });
+                },
+              ),
+              Text('Dropdown selected: ${_selectedTypeItem.name}'),
+              SubmitButton(),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Center dropdown() {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+          child: DropdownButton(
+            items: _dropdownMenuItem,
+            value: _selectedTypeItem,
+            onChanged: (ListItem? value) {
+              setState(() {
+                _selectedTypeItem = value!;
+              });
+            },
           ),
         ),
       ),
@@ -114,11 +124,9 @@ class _InputWidgetState extends State<InputWidget> {
 
   Widget SubmitButton() {
     return Container(
-      // width: 150,
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            //ถ้ามีการกรอกข้อความมาให้เเสดงอะไร
             print(_username.text);
           }
         },
@@ -129,49 +137,51 @@ class _InputWidgetState extends State<InputWidget> {
 
   Widget usernameTextFormField() {
     return Container(
-      margin: const EdgeInsets.all(8),
-      child: TextFormField(
-        controller: _username,
-        validator: (Value) {
-          if (Value!.isEmpty) {
-            return "Please Enter Username";
-            //ถ้ากรอกเเล้วไม่ผ่าน
-          }
-          return null;
-        },
-        decoration: const InputDecoration(
-          labelText: 'Username',
-          prefixIcon:
-              Icon(Icons.person), //prefixIcon ไอคอนจะมาอยู่กล่องข้างในด้วย
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32)), //ใส่ขอบกลม
-          ), //จะมีเส้นขอบขึ้นมา
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+        child: TextFormField(
+          style: TextStyle(color: Colors.purple),
+          controller: _username,
+          validator: (vaLue) {
+            if (vaLue!.isEmpty) {
+              return "please enter username";
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              labelText: 'username',
+              prefixIcon: Icon(Icons.vpn_key),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32)),
+              )),
         ),
       ),
     );
   }
 
   Widget passwordTextFormField() {
-    return Container(
-      margin: const EdgeInsets.all(8),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: TextFormField(
-        controller: _password,
         obscureText: true,
-        validator: (Value) {
-          if (Value!.isEmpty) {
-            return "Please Enter Password";
-            //ถ้ากรอกเเล้วไม่ผ่าน
+        obscuringCharacter: '*',
+        controller: _pasw,
+        validator: (vaLue) {
+          if (vaLue!.isEmpty) {
+            return "please enter your password";
           }
           return null;
         },
-        decoration: const InputDecoration(
-          labelText: 'Password',
-          prefixIcon: Icon(
-              Icons.vpn_key_sharp), //prefixIcon ไอคอนจะมาอยู่กล่องข้างในด้วย
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32)), //ใส่ขอบกลม
-          ), //จะมีเส้นขอบขึ้นมา
-        ),
+        decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            labelText: 'Password',
+            prefixIcon: Icon(Icons.vpn_key),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32)),
+            )),
       ),
     );
   }
@@ -181,19 +191,32 @@ class _InputWidgetState extends State<InputWidget> {
 
     for (var food in foods!) {
       listFood.add(
-        RadioListTile<dynamic>(
-            title: Text(food.thname!),
-            subtitle: Text(food.enname!),
-            secondary: Text('${food.price} บาท'),
-            value: food.foodvalue,
-            groupValue: groupfood,
-            onChanged: (value) {
-              setState(() {
-                groupfood = value;
-              });
-            }),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            child: RadioListTile<dynamic>(
+              title: Text(
+                food.thname!,
+              ),
+              subtitle: Text(
+                food.enname!,
+              ),
+              secondary: Text(
+                '${food.price} บาท',
+              ),
+              value: food.foodvalue!,
+              groupValue: groupfood,
+              onChanged: (value) {
+                setState(() {
+                  groupfood = value;
+                });
+              },
+            ),
+          ),
+        ),
       );
     }
+
     return listFood;
   }
 
@@ -210,9 +233,9 @@ class _InputWidgetState extends State<InputWidget> {
           });
 
           if (value!) {
-            checkedDrink.add(drink.thname);
+            checkDrink.add(drink.thname);
           } else {
-            checkedDrink.remove(drink.thname);
+            checkDrink.remove(drink.thname);
           }
         },
       ));
@@ -221,13 +244,10 @@ class _InputWidgetState extends State<InputWidget> {
   }
 }
 
-class _dropdownMenuItem {}
-
 class ListItem {
   int? value;
   String? name;
 
-  //Contructor
   ListItem(this.value, this.name);
 
   static getItem() {
@@ -237,6 +257,8 @@ class ListItem {
       ListItem(3, 'ก๋วยเตี่ยวต้มย่ำ')
     ];
   }
+
+  // void add(DropdownMenuItem dropdownMenuItem) {}
 }
 
 Widget line() => Container(
